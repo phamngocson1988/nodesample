@@ -1,0 +1,28 @@
+ConnectionTable:
+  Type: "AWS::DynamoDB::Table"
+  DeletionPolicy: ${self:custom.DeletionPolicy}
+  Properties:
+    TableName: ${self:custom.ConnectionTable}
+    AttributeDefinitions:
+      - AttributeName: pk
+        AttributeType: S
+      - AttributeName: sk
+        AttributeType: S
+      - AttributeName: connectionId
+        AttributeType: S
+    KeySchema:
+      - AttributeName: pk
+        KeyType: HASH
+      - AttributeName: sk
+        KeyType: RANGE
+    GlobalSecondaryIndexes:
+      - IndexName: "connectionId-index"
+        KeySchema:
+          - AttributeName: "connectionId"
+            KeyType: "HASH"
+        Projection:
+          ProjectionType: "KEYS_ONLY"
+    BillingMode: ${self:custom.BillingMode}
+    # ProvisionedThroughput:
+    #   ReadCapacityUnits: ${self:custom.tableThroughput}
+    #   WriteCapacityUnits: ${self:custom.tableThroughput}

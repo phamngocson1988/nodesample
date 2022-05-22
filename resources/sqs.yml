@@ -1,0 +1,8 @@
+
+Resources:
+    ScanVirusSQSFiFo:
+      Type: 'AWS::SQS::Queue'
+      Properties:
+        QueueName: sqs-${self:provider.stage}-core.fifo
+        FifoQueue: true
+        ContentBasedDeduplication: true

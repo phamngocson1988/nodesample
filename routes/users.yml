@@ -1,0 +1,11 @@
+users:
+  handler: src/controllers/users/index.router
+  events:
+    - http:
+        private: true
+        path: user/{method}
+        method: any
+        cors:
+          origin: '*'
+          headers: ${self:custom.allowed-headers}
+        # authorizer: ${self:custom.authorizer}

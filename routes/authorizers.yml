@@ -1,0 +1,4 @@
+authorizerUser:
+  handler: src/services/authorizers/authorizerUser.handler
+#authorizerCplus:
+#  handler: src/services/authorizers/authorizerCplus.handler

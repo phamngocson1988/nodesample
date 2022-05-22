@@ -1,0 +1,11 @@
+test:
+  handler: src/services/test/index.router
+  events:
+    - http:
+        private: true
+        path: test/{method}
+        method: any
+        cors:
+          origin: '*'
+          headers: ${self:custom.allowed-headers}
+        # authorizer: ${self:custom.authorizer}

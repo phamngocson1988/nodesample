@@ -1,0 +1,92 @@
+service: vtadi-server
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  memorySize: 1024 # optional, in MB, default is 1024
+  timeout: 30 # optional, in seconds, default is 6
+  lambdaHashingVersion: 20201221
+  stage: ${opt:stage, env:STAGE}
+  region: ${opt:region, env:REGION}
+  environment:
+    UserTable: ${env:UserTable}
+  deploymentBucket:
+    name: vtadi-deployment-bucket-${self:provider.region}-${env:AWS_ACCOUNT_NUMBER}
+    serverSideEncryption: AES256
+    blockPublicAccess: true
+  deploymentPrefix: vtadi
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - 'dynamodb:*'
+            - 'lambda:*'
+            - 'logs:*'
+            - 's3:*'
+            - 'sqs:*'
+            - 'logs:CreateLogGroup'
+            - 'logs:CreateLogStream'
+            - 'logs:PutLogEvents'
+            - 'ec2:CreateNetworkInterface'
+            - 'ec2:DescribeNetworkInterfaces'
+            - 'ec2:DeleteNetworkInterface'
+            - 'secretsmanager:*'
+          Resource:
+            - '*'
+        - Effect: Allow
+          Action:
+            - 'execute-api:ManageConnections'
+          Resource:
+            - arn:aws:execute-api:*:*:**/@connections/*
+            - arn:aws:execute-api:*:*:*/@connections/*
+  # vpc:
+  #   securityGroupIds:
+  #     - ${env:SECURITY_GROUP_ID, ''}
+  #   subnetIds:
+  #     - ${env:SUBNET1_ID, ''}
+  #     - ${env:SUBNET2_ID, ''}
+plugins:
+  - serverless-deployment-bucket
+  - serverless-offline
+  - serverless-webpack
+  - serverless-plugin-split-stacks
+  - serverless-prune-plugin # Delete old function
+  - serverless-add-api-key
+
+custom:
+  allowed-headers:
+    - authorization
+    - Content-Type
+    - cplus-authorization
+    - Accept-Language
+    - x-api-key
+    - Cache-Control
+    - Pragma
+  # authorizer:
+  #   name: auth-reporting
+  #   resultTtlInSeconds: 0
+  #   type: request
+  #   identitySource: method.request.header.cplus-authorization   
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true
+  serverless-offline:
+    port: 5000
+    babelOptions:
+      presets: ["env"]
+  splitStacks:
+    perFunction: false
+    perType: true
+    perGroupFunction: false
+  webpackIncludeModules:
+    forceInclude:
+      - mysql2
+  apiKeys:
+    - ${self:provider.region}-${self:provider.stage}-vtadi
+  prune:
+    automatic: true
+    number: 2
+
+functions:
+  - ${file(./routes/users.yml)}

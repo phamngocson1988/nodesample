@@ -1,0 +1,25 @@
+getS3SignedUrl:
+  handler: src/services/s3/getS3SignedUrl.handler
+  events:
+    - http:
+        path: s3/sign
+        method: get
+        private: true
+        authorizer: ${self:custom.authorizer.users}
+        cors:
+          origin: "*"
+          headers: ${self:custom.allowed-headers}
+          allowCredentials: false
+
+deleteS3Url:
+  handler: src/services/s3/deleteS3Url.handler
+  events:
+    - http:
+        path: s3/delete
+        method: delete
+        private: true
+        authorizer: ${self:custom.authorizer.users}
+        cors:
+          origin: "*"
+          headers: ${self:custom.allowed-headers}
+          allowCredentials: false

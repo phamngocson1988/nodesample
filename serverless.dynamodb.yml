@@ -1,0 +1,48 @@
+service: core-dynamodb
+
+plugins:
+  - serverless-deployment-bucket
+
+custom:
+  stage: ${opt:stage, "dev"}
+  region: ${self:custom.environment.REGION}
+  profile: ${self:custom.environment.PROFILE}
+
+  # DynamoDB tables
+  ConnectionTable: ${self:custom.stage}-webchat-connection-2
+  SettingTable: ${self:custom.stage}-webchat-setting-2
+  UserTable: ${self:custom.stage}-webchat-user-2
+
+  # S3 bucket name
+  WebchatUploadBucket: core-cdn-${self:custom.stage}
+
+  # Environment
+  environment: ${file(.env.yml)}
+
+  BillingMode: PAY_PER_REQUEST
+  DeletionPolicy: Retain
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  memorySize: 128 # optional, in MB, default is 1024
+  timeout: 10 # optional, in seconds, default is 6
+  stage: ${self:custom.stage}
+  region: ${self:custom.region}
+  profile: ${self:custom.profile}
+  deploymentBucket:
+    name: sg-serverlessdeploymentbucket-${self:custom.region}
+    serverSideEncryption: AES256
+  deploymentPrefix: core
+  environment:
+    STAGE: ${self:custom.stage}
+    REGION: ${self:custom.region}
+
+    # Tables
+    ConnectionTable: ${self:custom.ConnectionTable}
+    SettingTable: ${self:custom.SettingTable}
+    UserTable: ${self:custom.UserTable}
+
+# Create our resources with separate CloudFormation templates
+resources:
+  - ${file(resources/tables.yml)}

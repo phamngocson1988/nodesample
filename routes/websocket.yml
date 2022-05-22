@@ -1,0 +1,28 @@
+connect:
+  handler: src/services/connections/connect.handler
+  events:
+    - websocket:
+        route: $connect
+
+disconnect:
+  handler: src/services/connections/disconnect.handler
+  events:
+    - websocket:
+        route: $disconnect
+
+sendMessage:
+  handler: src/services/messages/sendMessage.handler
+  timeout: 30
+  warmup:
+    message:
+      enabled: true
+  events:
+    - websocket:
+        route: sendMessage
+
+deleteMessage:
+  handler: src/services/messages/deleteMessage.handler
+  timeout: 30
+  events:
+    - websocket:
+        route: deleteMessage

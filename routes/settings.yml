@@ -1,0 +1,38 @@
+getSetting:
+  handler: src/services/settings/getSettings.handler
+  events:
+    - http:
+        path: settings
+        method: get
+        private: true
+        authorizer: ${self:custom.authorizer.users}
+        cors:
+          origin: "*"
+          headers: ${self:custom.allowed-headers}
+          allowCredentials: false
+
+putSetting:
+  handler: src/services/settings/putSettings.handler
+  events:
+    - http:
+        path: settings
+        method: put
+        private: true
+        authorizer: ${self:custom.authorizer.users}
+        cors:
+          origin: "*"
+          headers: ${self:custom.allowed-headers}
+          allowCredentials: false
+
+deleteSettings:
+  handler: src/services/settings/deleteSettings.handler
+  events:
+    - http:
+        path: settings
+        method: delete
+        private: true
+        authorizer: ${self:custom.authorizer.users}
+        cors:
+          origin: "*"
+          headers: ${self:custom.allowed-headers}
+          allowCredentials: false

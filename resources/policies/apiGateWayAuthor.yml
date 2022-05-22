@@ -1,0 +1,6 @@
+Effect: Allow
+Action:
+  - "execute-api:ManageConnections"
+Resource:
+  - arn:aws:execute-api:*:*:**/@connections/*
+  - arn:aws:execute-api:*:*:*/@connections/*

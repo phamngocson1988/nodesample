@@ -1,0 +1,4 @@
+Resources:
+  - ${file(resources/connection-table.yml)}
+  - ${file(resources/setting-table.yml)}
+  - ${file(resources/user-table.yml)}

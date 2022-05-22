@@ -1,0 +1,27 @@
+service: sg-cplus-reporting-database
+
+provider:
+  name: aws
+  useDotenv: true
+  stage: ${opt:stage, env:STAGE}
+  region: ${opt:region, env:REGION}
+  deploymentBucket:
+    name: cplus-deployment-bucket-${self:provider.region}-${env:AWS_ACCOUNT_NUMBER}
+    serverSideEncryption: AES256
+    blockPublicAccess: true
+  deploymentPrefix: report
+plugins:
+  - serverless-plugin-split-stacks
+
+custom:
+  region: ${opt:region, env:REGION}
+  splitStacks:
+    perFunction: false
+    perType: true
+    perGroupFunction: false
+  prune:
+    automatic: true
+    number: 2
+
+resources:
+  - ${file(resources/rds.yml)}

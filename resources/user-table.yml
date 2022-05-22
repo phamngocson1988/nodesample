@@ -1,0 +1,19 @@
+UserTable:
+  Type: "AWS::DynamoDB::Table"
+  DeletionPolicy: ${self:custom.DeletionPolicy}
+  Properties:
+    TableName: ${self:custom.UserTable}
+    AttributeDefinitions:
+      - AttributeName: pk
+        AttributeType: S
+      - AttributeName: sk
+        AttributeType: S
+    KeySchema:
+      - AttributeName: pk
+        KeyType: HASH
+      - AttributeName: sk
+        KeyType: RANGE
+    BillingMode: ${self:custom.BillingMode}
+    # ProvisionedThroughput:
+    #   ReadCapacityUnits: ${self:custom.tableThroughput}
+    #   WriteCapacityUnits: ${self:custom.tableThroughput}

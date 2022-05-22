@@ -1,0 +1,1 @@
+export const CURRENT_SETTING_VERSION = "v1";
