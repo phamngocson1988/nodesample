@@ -1,3 +1,3 @@
 export const systemConfig = {
-    JWT_SECRET: 'SecretKeyVtadi'
-  };
+  JWT_SECRET: 'SecretKeyVtadi'
+};
