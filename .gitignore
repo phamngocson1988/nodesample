@@ -1,0 +1,6 @@
+node_modules
+.serverless
+.build
+yarn.lock
+package.lock
+.env.yml
