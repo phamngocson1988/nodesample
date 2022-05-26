@@ -1,11 +1,36 @@
 users:
-  handler: src/controllers/users/index.router
+  handler: src/services/users/handlers/index.router
   events:
-    - http:
+    - httpApi:
         private: true
-        path: user/{method}
-        method: any
+        path: user/signup
+        method: POST
         cors:
           origin: '*'
           headers: ${self:custom.allowed-headers}
         # authorizer: ${self:custom.authorizer}
+    - httpApi:
+        private: true
+        path: user/signin
+        method: POST
+        cors:
+          origin: '*'
+          headers: ${self:custom.allowed-headers}
+        # authorizer: ${self:custom.authorizer}
+    - httpApi:
+        private: true
+        path: user/logout
+        method: POST
+        cors:
+          origin: '*'
+          headers: ${self:custom.allowed-headers}
+        # authorizer: ${self:custom.authorizer}
+    - httpApi:
+        private: true
+        path: user/profile
+        method: GET
+        cors:
+          origin: '*'
+          headers: ${self:custom.allowed-headers}
+        # authorizer: ${self:custom.authorizer}
+    

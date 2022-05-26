@@ -1,11 +1,24 @@
 service: vtadi-server
+frameworkVersion: '3'
+useDotenv: true
+
+plugins:
+  - serverless-dotenv-plugin
+  - serverless-deployment-bucket
+  - serverless-offline
+  - serverless-webpack
+  - serverless-plugin-split-stacks
+  - serverless-prune-plugin # Delete old function
+  - serverless-add-api-key
 
 provider:
   name: aws
   runtime: nodejs14.x
   memorySize: 1024 # optional, in MB, default is 1024
   timeout: 30 # optional, in seconds, default is 6
-  lambdaHashingVersion: 20201221
+  lambdaHashingVersion: 20200924
+  tracing:
+    lambda: true
   stage: ${opt:stage, env:STAGE}
   region: ${opt:region, env:REGION}
   environment:
@@ -46,13 +59,6 @@ provider:
   #   subnetIds:
   #     - ${env:SUBNET1_ID, ''}
   #     - ${env:SUBNET2_ID, ''}
-plugins:
-  - serverless-deployment-bucket
-  - serverless-offline
-  - serverless-webpack
-  - serverless-plugin-split-stacks
-  - serverless-prune-plugin # Delete old function
-  - serverless-add-api-key
 
 custom:
   allowed-headers:
